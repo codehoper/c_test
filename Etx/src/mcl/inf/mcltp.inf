@@ -1,0 +1,32 @@
+; MCLTP.INF -- Mesh Connectivity Layer.
+;
+; MCL Installation file for Windows XP.
+; Installs MCL in its role as an NDIS transport protocol.
+;
+; Copyright (c) Microsoft Corporation.  All rights reserved.
+
+[Version]
+    Signature   = "$Windows NT$"
+    Class       = NetTrans
+    ClassGUID   = {4d36e975-e325-11ce-bfc1-08002be10318}
+    Provider    = %Msft%
+
+[Manufacturer]
+    %Msft% = Microsoft
+
+[Microsoft]
+    %MCL.DisplayName% = MCL.Install, MS_MCLTP
+
+[MCL.Install]
+    Characteristics = 0x10 ; NCF_NO_SERVICE
+    AddReg          = Registry.MCL.Install
+
+[Registry.MCL.Install]
+    HKR, Ndi, HelpText, 0, %MCL.HelpText%
+    HKR, Ndi\Interfaces, UpperRange, 0, "noupper"
+    HKR, Ndi\Interfaces, LowerRange, 0, "ndis5"
+
+[Strings]
+Msft = "Microsoft"
+MCL.DisplayName = "MCL (Mesh Connectivity Layer) Protocol"
+MCL.HelpText    = "Mesh Connectivity Layer. Implements ad-hoc multi-hop routing."

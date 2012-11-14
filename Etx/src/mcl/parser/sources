@@ -1,0 +1,32 @@
+#
+# Copyright (c) Microsoft Corporation
+#
+# This file is part of the Microsoft Research Mesh Connectivity Layer.
+# You should have received a copy of the Microsoft Research Shared Source
+# license agreement (MSR-SSLA) for this software; see the file "license.txt".
+# If not, please see http://research.microsoft.com/mesh/license.htm,
+# or write to Microsoft Research, One Microsoft Way, Redmond, WA 98052-6399.
+#
+
+!INCLUDE ..\version.inc
+
+UMTYPE=windows
+TARGETNAME=lqsr
+TARGETPATH=obj
+TARGETTYPE=DYNLINK
+USE_MSVCRT=1
+
+INCLUDES = ..\inc
+
+TARGETLIBS = \
+    $(SDK_LIB_PATH)\kernel32.lib \
+    $(SDK_LIB_PATH)\bhsupp.lib \
+    $(SDK_LIB_PATH)\parser.lib \
+    $(SDK_LIB_PATH)\nmapi.lib
+
+SOURCES = \
+    lqsr.rc \
+    lqsr.c
+
+DLLENTRY = _DllMainCRTStartup
+DLLDEF = lqsr.def

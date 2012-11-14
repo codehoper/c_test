@@ -1,0 +1,72 @@
+; MCLMP.INF -- Mesh Connectivity Layer.
+;
+; MCL Installation file for Windows XP.
+; Installs MCL in its role as an NDIS miniport.
+;
+; Copyright (c) Microsoft Corporation.  All rights reserved.
+
+[Version]
+    Signature    = "$Windows NT$"
+    Class        = Net
+    ClassGUID    = {4d36e972-e325-11ce-bfc1-08002be10318}
+    Provider     = %Msft%
+
+[Manufacturer]
+    %Msft% = Microsoft
+
+[Microsoft]
+    %MCL.DisplayName% = MCL.ndi, MS_MCLMP
+
+[MCL.ndi]
+    AddReg = MCL.ndi.reg
+    Characteristics = 0x1    ; NCF_VIRTUAL
+    CopyFiles = MCL.Files.sys, MCL.Files.drv
+
+[MCL.ndi.reg]
+    HKR,    Ndi,                        Service,        0,  "mcl"
+    HKR,    Ndi,                        HelpText,       0,  %MCL.HelpText%
+    HKR,    Ndi\Interfaces,             LowerRange,     0,  "nolower"
+    HKR,    Ndi\Interfaces,             UpperRange,     0,  "ndis5"
+
+[MCL.ndi.Services]
+    AddService = mcl, 2, MCL.Service, MCL.AddEventLog
+
+[MCL.Service]
+    DisplayName = %MCL.DisplayName%
+    ServiceType = 1             ; SERVICE_KERNEL_DRIVER
+    StartType = 3               ; SERVICE_DEMAND_START
+    ErrorControl = 1            ; SERVICE_ERROR_NORMAL
+    ServiceBinary = %12%\mcl.sys
+    LoadOrderGroup = NDIS
+    Description = %MCL.ServiceDescription%
+
+[MCL.ndi.Remove]
+    DelReg = MCL.ndi.reg.DelReg
+
+[MCL.ndi.reg.DelReg]
+
+[MCL.ndi.Remove.Services]
+    DelService = mcl
+
+[MCL.Files.sys]
+    mcl.exe
+
+[MCL.Files.drv]
+    mcl.sys
+
+[DestinationDirs]
+    MCL.Files.sys              = 11 ; %WINDIR%\SYSTEM32
+    MCL.Files.drv              = 12 ; %WINDIR%\SYSTEM32\DRIVERS
+
+[MCL.AddEventLog]
+  AddReg = MCL.AddEventLog.Reg
+
+[MCL.AddEventLog.Reg]
+  HKR, , EventMessageFile, 0x00020000, "%%SystemRoot%%\System32\netevent.dll"
+  HKR, , TypesSupported,   0x00010001, 7
+
+[Strings]
+Msft = "Microsoft"
+MCL.DisplayName = "MCL (Mesh Connectivity Layer) Virtual Adapter"
+MCL.HelpText = "Mesh Connectivity Layer. Implements ad-hoc multi-hop routing."
+MCL.ServiceDescription = "Mesh Connectivity Layer Miniport"
